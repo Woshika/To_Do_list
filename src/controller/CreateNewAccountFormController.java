@@ -117,6 +117,7 @@ public class CreateNewAccountFormController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Success....!");
                 alert.showAndWait();
 
+                //when click alert message ok then log login form
                 Parent parent = FXMLLoader.load(this.getClass().getResource("../view/LoginForm.fxml"));
                 Scene scene = new Scene(parent);
 
@@ -125,7 +126,6 @@ public class CreateNewAccountFormController {
                 stage.setTitle("Login");
                 stage.centerOnScreen();
             }
-
         }else{
 
             setBorderColor("red");

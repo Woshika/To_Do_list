@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="root" onMouseClicked="#lblCreateNewAccountOnMouseClicked" prefHeight="441.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+<AnchorPane fx:id="root" onMouseClicked="#lblCreateNewAccountOnMouseClicked" prefHeight="440.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
    <children>
       <Label layoutX="139.0" layoutY="25.0" text="LOGIN" textFill="#433737">
          <font>
@@ -21,7 +21,7 @@
             <Font name="Arial" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="txtName" layoutX="22.0" layoutY="125.0" prefHeight="36.0" prefWidth="288.0" promptText="Enter Name" />
+      <TextField fx:id="txtUserName" layoutX="22.0" layoutY="125.0" prefHeight="36.0" prefWidth="288.0" promptText="Enter Name" />
       <Label layoutX="104.0" layoutY="420.0" text="Designed By : Woshika Kavindi">
          <font>
             <Font size="10.0" />
@@ -37,8 +37,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <PasswordField layoutX="22.0" layoutY="208.0" prefHeight="36.0" prefWidth="288.0" promptText="Enter Password" />
-      <Button layoutX="53.0" layoutY="259.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="237.0" style="-fx-background-color: #2980b9;" text="Login" textFill="WHITE">
+      <PasswordField fx:id="txtPassword" layoutX="22.0" layoutY="208.0" onAction="#txtPasswordOnAction" prefHeight="36.0" prefWidth="288.0" promptText="Enter Password" />
+      <Button layoutX="53.0" layoutY="259.0" mnemonicParsing="false" onAction="#btnLoginOnAction" prefHeight="36.0" prefWidth="237.0" style="-fx-background-color: #2980b9;" text="Login" textFill="WHITE">
          <font>
             <Font size="13.0" />
          </font>
