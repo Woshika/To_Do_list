@@ -71,5 +71,6 @@
             <Font name="Arial Bold" size="11.0" />
          </font>
       </Button>
+      <Label fx:id="lblId" layoutX="253.0" layoutY="101.0" text="UserID" />
    </children>
 </AnchorPane>

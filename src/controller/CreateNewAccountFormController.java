@@ -2,14 +2,13 @@ package controller;
 
 import db.DBConnection;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CreateNewAccountFormController {
     public PasswordField txtNewPassword;
@@ -20,6 +19,7 @@ public class CreateNewAccountFormController {
     public TextField txtUserName;
     public TextField txtEmail;
     public Button btnRegister;
+    public Label lblID;
 
     public void initialize(){
         setVisibility(false);
@@ -71,9 +71,34 @@ public class CreateNewAccountFormController {
 
         txtUserName.requestFocus();
 
-        DBConnection object = DBConnection.getInstance();
-        Connection connection = object.getConnection();
+        autoGenerateID();
+    }
 
-        System.out.println(connection);
+    //Auto generate ID
+    public void autoGenerateID()  {
+        Connection connection = DBConnection.getInstance().getConnection();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select id from user order by id desc limit 1");
+            boolean isExist = resultSet.next();
+            if(isExist){
+                String userID =  resultSet.getString(1);
+                userID = userID.substring(1, userID.length());
+                int intId = Integer.parseInt(userID);
+                intId++;
+
+                if(intId < 10){
+                    lblID.setText("U00" + intId);
+                }else if(intId < 100){
+                    lblID.setText("U0" + intId);
+                }else{
+                    lblID.setText("U" + intId);
+                }
+            }else{
+                lblID.setText("U001");
+            }
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
     }
 }
