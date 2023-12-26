@@ -88,54 +88,66 @@ public class CreateNewAccountFormController {
     }
 
     public void register() throws SQLException, ClassNotFoundException, IOException {
-        String newPassword = txtNewPassword.getText();
-        String confirmPassword = txtConfirmPassword.getText();
 
-        if(newPassword.equals(confirmPassword)){
-            setBorderColor("transparent");
-
-            setVisibility(false);
-
-            String id = lblID.getText();
-            String userName = txtUserName.getText();
-            String email = txtEmail.getText();
-
-
-            Connection connection = DBConnection.getInstance().getConnection();
-
-            //sql injection support prepareStatement.It doesn't support createStatement
-            //insert value to database from intellij
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user VALUES(?,?,?,?)");
-            preparedStatement.setObject(1,id);
-            preparedStatement.setObject(2,userName);
-            preparedStatement.setObject(3,email);
-            preparedStatement.setObject(4,confirmPassword);
-
-            int i = preparedStatement.executeUpdate();
-
-            if(i > 0){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Success....!");
-                alert.showAndWait();
-
-                //when click alert message ok then log login form
-                Parent parent = FXMLLoader.load(this.getClass().getResource("../view/LoginForm.fxml"));
-                Scene scene = new Scene(parent);
-
-                Stage stage = (Stage) root.getScene().getWindow();
-                stage.setScene(scene);
-                stage.setTitle("Login");
-                stage.centerOnScreen();
-            }
-        }else{
-
-            setBorderColor("red");
-
-            setVisibility(true);
-
-            txtConfirmPassword.clear();
-            txtNewPassword.clear();
-
+        if(txtUserName.getText().isEmpty()){
+            txtUserName.requestFocus();
+        }else if(txtEmail.getText().isEmpty()){
+            txtEmail.requestFocus();
+        }else if(txtNewPassword.getText().isEmpty()){
             txtNewPassword.requestFocus();
+        }else if(txtConfirmPassword.getText().isEmpty()){
+            txtConfirmPassword.requestFocus();
+        }else{
+            String newPassword = txtNewPassword.getText();
+            String confirmPassword = txtConfirmPassword.getText();
+
+            if(newPassword.equals(confirmPassword)){
+                setBorderColor("transparent");
+
+                setVisibility(false);
+
+                String id = lblID.getText();
+                String userName = txtUserName.getText();
+                String email = txtEmail.getText();
+
+
+                Connection connection = DBConnection.getInstance().getConnection();
+
+                //sql injection support prepareStatement.It doesn't support createStatement
+                //insert value to database from intellij
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user VALUES(?,?,?,?)");
+                preparedStatement.setObject(1,id);
+                preparedStatement.setObject(2,userName);
+                preparedStatement.setObject(3,email);
+                preparedStatement.setObject(4,confirmPassword);
+
+                int i = preparedStatement.executeUpdate();
+
+                if(i > 0){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Success....!");
+                    alert.showAndWait();
+
+                    //when click alert message ok then log login form
+                    Parent parent = FXMLLoader.load(this.getClass().getResource("../view/LoginForm.fxml"));
+                    Scene scene = new Scene(parent);
+
+                    Stage stage = (Stage) root.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.setTitle("Login");
+                    stage.centerOnScreen();
+                }
+            }else{
+
+                setBorderColor("red");
+
+                setVisibility(true);
+
+                txtConfirmPassword.clear();
+                txtNewPassword.clear();
+
+                txtNewPassword.requestFocus();
+            }
         }
+
     }
 }
