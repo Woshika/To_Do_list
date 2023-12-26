@@ -1,6 +1,8 @@
 package controller;
 
 import db.DBConnection;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,9 @@ public class ToDoFormController {
     public AnchorPane subRoot;
     public TextField txtDescription;
     public ListView<ToDoTM> lstToDo;
+    public TextField txtSelectedToDo;
+    public Button btnDelete;
+    public Button btnUpdate;
 
     public void initialize() throws SQLException, ClassNotFoundException {
         lblTitle.setText("Hi " + LoginFormController.loginUserName + " Welcome to To Do List");
@@ -30,6 +35,31 @@ public class ToDoFormController {
         subRoot.setVisible(false);
 
         loadList();
+
+        setDisableCommon(true);
+
+        lstToDo.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoTM>() {
+            @Override
+            public void changed(ObservableValue<? extends ToDoTM> observable, ToDoTM oldValue, ToDoTM newValue) {
+                setDisableCommon(false);
+
+                subRoot.setVisible(false);
+
+                ToDoTM selectedItem = lstToDo.getSelectionModel().getSelectedItem();
+
+                if(selectedItem == null){
+                    return;
+                }
+                txtSelectedToDo.setText(selectedItem.getDescription());
+                txtSelectedToDo.requestFocus();
+            }
+        });
+    }
+
+    public void setDisableCommon(boolean isDisable){
+        txtSelectedToDo.setDisable(isDisable);
+        btnDelete.setDisable(isDisable);
+        btnUpdate.setDisable(isDisable);
     }
 
     public void btnLogOutOnAction(ActionEvent actionEvent) throws IOException {
@@ -48,8 +78,12 @@ public class ToDoFormController {
     }
 
     public void btnAddNewToDoOnAction(ActionEvent actionEvent) {
-        subRoot.setVisible(true);
+        lstToDo.getSelectionModel().clearSelection();
         txtDescription.requestFocus();
+        subRoot.setVisible(true);
+        setDisableCommon(true);
+        txtSelectedToDo.clear();
+
     }
 
     public void btnAddToListOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
