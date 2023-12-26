@@ -16,6 +16,7 @@ import tm.ToDoTM;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 public class ToDoFormController {
     public Label lblTitle;
@@ -164,7 +165,22 @@ public class ToDoFormController {
 
     }
 
-    public void btnDeleteOnAction(ActionEvent actionEvent) {
+    public void btnDeleteOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to delete this todo..?",ButtonType.YES,ButtonType.NO);
+
+        Optional<ButtonType> buttonType = alert.showAndWait();
+
+        if(buttonType.get().equals(ButtonType.YES)){
+            Connection connection = DBConnection.getInstance().getConnection();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM todo WHERE id = ?");
+            preparedStatement.setObject(1,selectedID);
+
+            preparedStatement.executeUpdate();
+            loadList();
+            setDisableCommon(true);
+        }
+
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
