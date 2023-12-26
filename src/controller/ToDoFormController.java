@@ -28,6 +28,8 @@ public class ToDoFormController {
     public Button btnDelete;
     public Button btnUpdate;
 
+    public String selectedID = null;
+
     public void initialize() throws SQLException, ClassNotFoundException {
         lblTitle.setText("Hi " + LoginFormController.loginUserName + " Welcome to To Do List");
         lblUserId.setText(LoginFormController.loginUserID);
@@ -52,6 +54,8 @@ public class ToDoFormController {
                 }
                 txtSelectedToDo.setText(selectedItem.getDescription());
                 txtSelectedToDo.requestFocus();
+
+                selectedID = selectedItem.getId();
             }
         });
     }
@@ -160,4 +164,20 @@ public class ToDoFormController {
 
     }
 
+    public void btnDeleteOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE todo SET description = ? WHERE id = ?");
+        preparedStatement.setObject(1,txtSelectedToDo.getText());
+        preparedStatement.setObject(2,selectedID);
+
+        preparedStatement.executeUpdate();
+
+        txtSelectedToDo.clear();
+        loadList();
+        setDisableCommon(true);
+    }
 }
